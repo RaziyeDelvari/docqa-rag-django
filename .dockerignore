@@ -1,0 +1,10 @@
+.env
+__pycache__/
+*.pyc
+media/
+staticfiles/
+.model_cache/
+venv/
+.git
+docs/screenshots
+*.zip

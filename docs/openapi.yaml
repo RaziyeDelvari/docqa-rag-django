@@ -1,0 +1,581 @@
+openapi: 3.0.3
+info:
+  title: DocQA API
+  version: 1.0.0
+  description: 'سامانه پرسش از اسناد: مدیریت اسناد، پرسش و پاسخ مبتنی بر RAG و تاریخچه.'
+paths:
+  /api/ask/:
+    post:
+      operationId: ask_create
+      description: ثبت پرسش، بازیابی ترکیبی، تولید پاسخ مستند و ذخیره در تاریخچه.
+      tags:
+      - ask
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Ask'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Ask'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Ask'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuestionHistory'
+          description: ''
+  /api/documents/:
+    get:
+      operationId: documents_list
+      description: CRUD اسناد. ایجاد/ویرایش به‌صورت خودکار متن را استخراج و ایندکس
+        می‌کند.
+      parameters:
+      - in: query
+        name: is_indexed
+        schema:
+          type: boolean
+        description: فیلتر بر اساس وضعیت ایندکس
+      - name: page
+        required: false
+        in: query
+        description: یک شماره صفحه‌ در مجموعه نتایج صفحه‌بندی شده.
+        schema:
+          type: integer
+      - in: query
+        name: search
+        schema:
+          type: string
+        description: جست‌وجو در عنوان و متن سند
+      tags:
+      - documents
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedDocumentListList'
+          description: ''
+    post:
+      operationId: documents_create
+      description: CRUD اسناد. ایجاد/ویرایش به‌صورت خودکار متن را استخراج و ایندکس
+        می‌کند.
+      parameters:
+      - in: query
+        name: is_indexed
+        schema:
+          type: boolean
+        description: فیلتر بر اساس وضعیت ایندکس
+      - in: query
+        name: search
+        schema:
+          type: string
+        description: جست‌وجو در عنوان و متن سند
+      tags:
+      - documents
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Document'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Document'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Document'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Document'
+          description: ''
+  /api/documents/{id}/:
+    get:
+      operationId: documents_retrieve
+      description: CRUD اسناد. ایجاد/ویرایش به‌صورت خودکار متن را استخراج و ایندکس
+        می‌کند.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: یک مقداد عدد یکتا که این سند را شناسایی میکند.
+        required: true
+      - in: query
+        name: is_indexed
+        schema:
+          type: boolean
+        description: فیلتر بر اساس وضعیت ایندکس
+      - in: query
+        name: search
+        schema:
+          type: string
+        description: جست‌وجو در عنوان و متن سند
+      tags:
+      - documents
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Document'
+          description: ''
+    put:
+      operationId: documents_update
+      description: CRUD اسناد. ایجاد/ویرایش به‌صورت خودکار متن را استخراج و ایندکس
+        می‌کند.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: یک مقداد عدد یکتا که این سند را شناسایی میکند.
+        required: true
+      - in: query
+        name: is_indexed
+        schema:
+          type: boolean
+        description: فیلتر بر اساس وضعیت ایندکس
+      - in: query
+        name: search
+        schema:
+          type: string
+        description: جست‌وجو در عنوان و متن سند
+      tags:
+      - documents
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Document'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Document'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Document'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Document'
+          description: ''
+    patch:
+      operationId: documents_partial_update
+      description: CRUD اسناد. ایجاد/ویرایش به‌صورت خودکار متن را استخراج و ایندکس
+        می‌کند.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: یک مقداد عدد یکتا که این سند را شناسایی میکند.
+        required: true
+      - in: query
+        name: is_indexed
+        schema:
+          type: boolean
+        description: فیلتر بر اساس وضعیت ایندکس
+      - in: query
+        name: search
+        schema:
+          type: string
+        description: جست‌وجو در عنوان و متن سند
+      tags:
+      - documents
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedDocument'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedDocument'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedDocument'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Document'
+          description: ''
+    delete:
+      operationId: documents_destroy
+      description: CRUD اسناد. ایجاد/ویرایش به‌صورت خودکار متن را استخراج و ایندکس
+        می‌کند.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: یک مقداد عدد یکتا که این سند را شناسایی میکند.
+        required: true
+      - in: query
+        name: is_indexed
+        schema:
+          type: boolean
+        description: فیلتر بر اساس وضعیت ایندکس
+      - in: query
+        name: search
+        schema:
+          type: string
+        description: جست‌وجو در عنوان و متن سند
+      tags:
+      - documents
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /api/documents/{id}/reindex/:
+    post:
+      operationId: documents_reindex_create
+      description: ایندکس دوباره یک سند (مثلا بعد از خطای Embedding).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: یک مقداد عدد یکتا که این سند را شناسایی میکند.
+        required: true
+      - in: query
+        name: is_indexed
+        schema:
+          type: boolean
+        description: فیلتر بر اساس وضعیت ایندکس
+      - in: query
+        name: search
+        schema:
+          type: string
+        description: جست‌وجو در عنوان و متن سند
+      tags:
+      - documents
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Document'
+          description: ''
+  /api/history/:
+    get:
+      operationId: history_list
+      description: تاریخچه پرسش و پاسخ (جدیدترین اول).
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: یک شماره صفحه‌ در مجموعه نتایج صفحه‌بندی شده.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: یک عبارت جستجو.
+        schema:
+          type: string
+      tags:
+      - history
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedQuestionHistoryList'
+          description: ''
+  /api/history/{id}/:
+    get:
+      operationId: history_retrieve
+      description: تاریخچه پرسش و پاسخ (جدیدترین اول).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: یک مقداد عدد یکتا که این پرسش و پاسخ را شناسایی میکند.
+        required: true
+      tags:
+      - history
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuestionHistory'
+          description: ''
+components:
+  schemas:
+    Ask:
+      type: object
+      properties:
+        question:
+          type: string
+          description: متن پرسش (فارسی یا انگلیسی)
+          maxLength: 2000
+        top_k:
+          type: integer
+          maximum: 15
+          minimum: 1
+          description: تعداد قطعه‌های بازیابی‌شده (پیش‌فرض ۵)
+      required:
+      - question
+    Document:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          title: عنوان
+          maxLength: 255
+        file:
+          type: string
+          format: uri
+          nullable: true
+          title: فایل docx
+          description: فایل docx (حداکثر طبق MAX_UPLOAD_MB).
+          pattern: (?:docx)$
+        content:
+          type: string
+          title: متن کامل
+          description: متن سند. اگر file ارسال شود از روی فایل پر می‌شود.
+        is_indexed:
+          type: boolean
+          readOnly: true
+          title: ایندکس‌شده
+        index_error:
+          type: string
+          readOnly: true
+          title: خطای ایندکس
+        chunk_count:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          title: تاریخ ایجاد
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+          title: آخرین ویرایش
+      required:
+      - chunk_count
+      - created_at
+      - id
+      - index_error
+      - is_indexed
+      - title
+      - updated_at
+    DocumentList:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          title: عنوان
+          maxLength: 255
+        is_indexed:
+          type: boolean
+          title: ایندکس‌شده
+        chunk_count:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          title: تاریخ ایجاد
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+          title: آخرین ویرایش
+      required:
+      - chunk_count
+      - created_at
+      - id
+      - title
+      - updated_at
+    PaginatedDocumentListList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/DocumentList'
+    PaginatedQuestionHistoryList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/QuestionHistory'
+    PatchedDocument:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          title: عنوان
+          maxLength: 255
+        file:
+          type: string
+          format: uri
+          nullable: true
+          title: فایل docx
+          description: فایل docx (حداکثر طبق MAX_UPLOAD_MB).
+          pattern: (?:docx)$
+        content:
+          type: string
+          title: متن کامل
+          description: متن سند. اگر file ارسال شود از روی فایل پر می‌شود.
+        is_indexed:
+          type: boolean
+          readOnly: true
+          title: ایندکس‌شده
+        index_error:
+          type: string
+          readOnly: true
+          title: خطای ایندکس
+        chunk_count:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          title: تاریخ ایجاد
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+          title: آخرین ویرایش
+    QuestionHistory:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        question:
+          type: string
+          readOnly: true
+          title: پرسش
+        answer:
+          type: string
+          readOnly: true
+          title: پاسخ
+        sources:
+          readOnly: true
+          title: منابع
+        model_used:
+          type: string
+          readOnly: true
+          title: مدل
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          title: زمان
+      required:
+      - answer
+      - created_at
+      - id
+      - model_used
+      - question
+      - sources
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
