@@ -145,4 +145,4 @@ docs/                  openapi.yaml and the screenshots folder
 docker compose run --rm web python manage.py test documents --noinput
 ```
 
-The tests (38 tests) run without internet. The database user must have permission to create the test database and the `vector` extension (the default compose user does).
+
